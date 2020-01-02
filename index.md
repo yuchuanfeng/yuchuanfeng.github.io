@@ -1,3 +1,3 @@
 ## 测试标题
 
-[测试文章](/testfile.md)
+[测试文章](/test_article)
