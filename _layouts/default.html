@@ -44,6 +44,21 @@
         {{ content }}
 
       </section>
+      <div id="container"></div>
+      <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+      <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+      <script>
+      var gitment = new Gitment({
+        owner: 'yuchuanfeng',   
+        repo: 'yuchuanfeng.github.io',      
+        oauth: {
+          client_id: '3ec13b1b900aa1b51cdb',      
+          client_secret: 'fb2e6470f372daaa43d3883c0ccbedcf0522c436', 
+        },
+      })
+      gitment.render('container')
+      </script>
+
       <footer>
         {% if site.github.is_project_page %}
           <p>Project maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
@@ -51,6 +66,9 @@
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></small></p>
       </footer>
     </div>
+
+
+      
 
     {% if site.google_analytics %}
       <script>
@@ -63,19 +81,4 @@
       </script>
     {% endif %}
   </body>
-  
-  <div id="container"></div>
-  <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-  <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-  <script>
-  var gitment = new Gitment({
-    owner: 'yuchuanfeng',   
-    repo: 'yuchuanfeng.github.io',      
-    oauth: {
-      client_id: '3ec13b1b900aa1b51cdb',      
-      client_secret: 'fb2e6470f372daaa43d3883c0ccbedcf0522c436', 
-    },
-  })
-  gitment.render('container')
-  </script>
 </html>
