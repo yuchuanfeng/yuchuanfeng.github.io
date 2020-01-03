@@ -1,12 +1,14 @@
 # 这是一个测试标题
 123321
 
+<h1>44444</h1>
 
-<html>
-    <div style="width:100%; height:350px;border:none;text-align:center">
-		<iframe allowtransparency="yes" frameborder="0" width="300" height="300" src="comment.html"></iframe>
+
+<p>
+    <div>
+		<iframe  src="comment.html"/>
 	</div>
-</html>
+</p>
 
 
 
