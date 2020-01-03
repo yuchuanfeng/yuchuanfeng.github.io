@@ -6,7 +6,7 @@
 
 <p>
     <div>
-		<iframe  src="comment.html"/>
+		<iframe widht="100%"  src="comment.html"/>
 	</div>
 </p>
 
