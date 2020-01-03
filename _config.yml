@@ -6,5 +6,5 @@ description: > # this means to ignore newlines until "show_excerpts:"
   line in _config.yml. It will appear in your document head meta (for
   Google search results) and in your feed.xml site description.
 
-theme: jekyll-theme-leap-day
+theme: PointingToTheMoon
 
