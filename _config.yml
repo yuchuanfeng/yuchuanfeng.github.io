@@ -32,7 +32,7 @@ defaults:
 texture:
   title: 宁静致远
   tagline: Developer. iOS
-  date_format: "%b %-d, %Y"
+  date_format: "%b %-d, %Y" #"%Y-%m-%d"
   style: black
   showNav: true
   showPicker: false
