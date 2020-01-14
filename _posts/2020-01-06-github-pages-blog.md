@@ -1,5 +1,5 @@
 ---
-title: 史上最详细 github pages 博客搭建教程 jekyll+gitalk [2020年最新]
+title: 史上最详细 github pages 博客搭建教程 jekyll+gitalk 【2020年最新】
 published: true
 tags: [jekyll, github pages]
 excerpt: 本文详细介绍了github pages 的最基本教程，及配置jekyll主题，添加gitalk评论系统教程。
