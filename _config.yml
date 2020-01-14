@@ -44,11 +44,11 @@ texture:
     weibo: 6189403394
     email: yuchuanfeng89@gmail.com
 github:
-  username: afeng89
+  username: yuchuanfeng
 gitalk:
     repo: gitalk
-    client_id: c96c9e7dcbfeed616b2d
-    client_secret: dc30a0fa7c2ff8a91af355365ad9b770f19fca73
+    client_id: 3502f566baaed04c2bc8
+    client_secret: 74ba830266e1c8337951faf7d16f438fdb6ab475
 
 
 # If you want to link only specific pages in your header, uncomment
