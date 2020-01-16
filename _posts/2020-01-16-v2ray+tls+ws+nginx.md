@@ -1,5 +1,5 @@
 ---
-title: V2Ray+TLS+WS+Nginx 搭建教程【2020年最新】
+title: V2Ray+TLS+DNSSEC+WS+Nginx+BBRPlus 搭建教程【2020年最新】
 tags: [V2Ray]
 excerpt: 
 ---
