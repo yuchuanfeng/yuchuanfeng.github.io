@@ -1,6 +1,7 @@
 ---
 title: Linux 端口访问不通问题
-tags: [Linux]
+tags: [Linux, 端口]
+categories: bugs
 excerpt:
 ---
 

@@ -1,10 +1,16 @@
 ---
 title: V2Ray+TLS+DNSSEC+WS+Nginx+BBRPlus 搭建教程【2020年最新】
 tags: [V2Ray]
+categories: 教程
 excerpt: 
 ---
 本地环境：MacOS 10.15.1   
 vps：Centos 7.7 64位 香港阿里云
+### 原因
+正常情况下，我们只需要安装 v2ray 然后加密传输就可以了，那为什么还要配置这么多麻烦的东西呢？我们应当尽可能的模仿正常网络请求，在过墙时尽量不被特征检测，尽可能不被干扰。尤其是在像2019年下半年的一段时间，梯子经常被间接性卡断，上网很不稳定。
+
+**流程是：** v2ray 客户端把请求伪装成 Https 请求，发送到 vps 的 nginx 服务器上，再由 nginx 转发到 v2ray 服务端，再由 v2ray 服务端分发到真正的服务器上，这样在过墙时是发送的一个**正常**的 https 请求，降低了被特征检测的概率，降低被墙的风险，提升网络稳定性。  
+![]({{site.url}}/downloads/v2ray+nginx/shiyitu.png)  
 
 ### 域名申请
 首先需要有一个域名，没有的就去申请一个，免费的也可以，我以[namecheap](https://www.namecheap.com/)为例，申请一个域名，它需要 paypal 付款，没有的需要先注册一个(国内的 paypal 好像也可以付款，这里我是用香港 paypal 付的)。域名随便买一个就可以，最便宜的一年8块钱左右。(域名一般是首次购买便宜，但是续费贵，所以购买一年后需要重新买一个新域名)  
@@ -12,7 +18,7 @@ vps：Centos 7.7 64位 香港阿里云
 购买完成后就可以在`domain list`中看到你买到的域名了：
 ![]({{site.url}}/downloads/v2ray+nginx/domain_finish.png)  
 
-### cloudflare域名托管+配置DNSSEC
+### cloudflare解析+配置DNSSEC
 下面内容会涉及两个网站（namecheap、cloudflare）之间的切换，将这两个网站分别在两个窗口打开，方便切换。  
 
 **DNS 配置**  
@@ -98,9 +104,7 @@ server {
 ```
 在浏览器中打开https + 你的域名(我的是https://ma.lichade89.xyz/)，如果能成功打开，则表示 nginx 配置成功了(注意是 https)。  
 ![]({{site.url}}/downloads/v2ray+nginx/nginx_success.png) 
-如果不能打开，请检查你的配置是否正确，及443端口是否已经打开。 
-![]({{site.url}}/downloads/v2ray+nginx/error_1.png) 
-如果浏览器报这种安全错误，直接跳过就好。  
+如果不能打开，请检查你的配置是否正确，及443端口是否已经打开。  
 
 ### v2ray 安装 && 配置
 网上有很多一键脚本了，直接google 搜就行了。  
@@ -112,7 +116,7 @@ sudo bash go.sh
 ```
 vim /etc/v2ray/config.json
 ```
-```
+```json
 {
   "log" : {
     "access": "/var/log/v2ray/access.log",
@@ -197,19 +201,56 @@ wget --no-check-certificate -O tcp.sh https://github.com/cx9208/Linux-NetSpeed/r
 ```
 ./tcp.sh
 ```
+### v2ray 多用户配置
+在一开始就可以发现，由于这样配置后，我们的网络请求多了一次 ssl 加密和接口转发，使得访问速度肯定要比正常配置 v2ray 要慢的。因此，这样配置是牺牲了一定的速度来保持稳定性。由于 v2ray 可以配置多用户，我们可以配置一个正常配置的用户，这样当我们在对速度需求较高的环境下（比如看高清视频）就切换到普通配置用户，当我们需要高稳定性情况下（查阅资料）切换到高稳定配置，v2ray 服务端配置如下：  
+```json
+{
+  "inbounds": [{
+    "port": 8089, // 高稳定用户
+    "protocol": "vmess",
+    "settings": {
+      "clients": [{
+        "id": "71880ee2-4d15-47da-87b2-xxxxxxxxxx",
+        "alterId": 64
+      }]
+    },
+    "streamSettings": {
+      "network": "ws",
+      "wsSettings": {
+        "path": "/nidebeibei"
+      }
+    }
+  }, {
+    "port": 8288, // 普通用户
+    "protocol": "vmess",
+    "settings": {
+      "clients": [{
+        "id": "71880ee2-4d15-47da-87b2-xxxxxxxxxx",
+        "alterId": 64
+      }]
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  }]
+}
+```
+同样在客户端配置一个普通用户，用于切换：  
+![]({{site.url}}/downloads/v2ray+nginx/v2ray_speed.png)  
 
 ### 其它问题
 
-**将域名输入到浏览器不能正常打开**  
-首先，显示404 not found 或者 nginx 信息页为正常打开，502 等等都是错误的。  
+**1. 将域名输入到浏览器不能正常打开**  
+首先，显示404 not found 或者 nginx 信息页为正常打开。502 等等都是错误的。    
 1. 如不能正常打开，先 ping 一下域名是否能正常解析
-2. 检查本地443端口是否打开
+2. 检查本地443端口是否打开，参考[这篇文章](https://yuchuanfeng.github.io/posts/linux-centos-port/)检测端口
 3. vps 配置是否允许443端口访问（如：阿里云需要手动配置 安全组，加入 443 端口）
 
-**配置完成不能正常翻墙**  
+**2. 配置完成不能正常翻墙**  
 1. v2ray 和 nginx 修改配置后需要重启或者重新 load
 2. 检查浏览器是否能正常打开域名
-3. 客户端配置是否和服务端一直（UUID、服务器域名、ws 
+3. 客户端配置是否和服务端一致（UUID、服务器域名、ws等）
 
 **参考：**  
 [V2Ray+WebSocket+TLS+Nginx配置与使用教程](https://doubibackup.com/v2ray-ws-tls-nginx.html)  
