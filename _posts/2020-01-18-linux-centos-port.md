@@ -44,6 +44,10 @@ iptables -A INPUT -p tcp --dport 80 -j ACCEPT // 允许端口访问
 iptables --list // 规则列表
 systemctl enable iptables.service
 service iptables save // 开机启动
+// 配置持久化
+yum install iptables-persistent （sudo apt-get install iptables-persistent）
+sudo netfilter-persistent save
+sudo netfilter-persistent reload
 ```
 
 ## 是否在监听
